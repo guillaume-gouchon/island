@@ -20,6 +20,8 @@
         <!-- endbuild -->
         <script src="bower_components/modernizr/modernizr.js"></script>
 
+        <link href='http://fonts.googleapis.com/css?family=Frijole' rel='stylesheet' type='text/css'>
+
     </head>
     <body>
         <!--[if lt IE 10]>
@@ -29,16 +31,41 @@
 
         <div class="container"></div>
 
-        <div id="blocker">
+        <div id="blocker" class="easeTransition" onmousemove="return false;">
+
             <div id="instructions">
-                <div>Click to play</div>
-                <div>(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)</div>
+                <div id="clickToPlay">Click to enter your island</div>
+                <br>
+                <div id="commands">
+                    MOUSE = Look around
+                    <br>
+                    W, A, S, D or Arrow Keys = Move
+                    <br>
+                    SPACE = Jump
+                </div>
             </div>
+
+            <div id="clickZone"></div>
+
+            <div id="credits">
+                <span class="link">Credits</span>
+                <div class="content easeTransition hide">
+                    <a href="http://glevelapps.blogspot.co.uk" target="_blank">Guillaume Gouchon</a>
+                    <a href="#" target="_blank">Romain Bertrand</a>
+                </div>
+            </div>
+
+            <div id="webGLError" class="hide">
+                <p>Your browser does not support WebGL...</p>
+                <p>
+                    Try <a href="http://google.com/chrome" target="_blank">Google Chrome</a> or <a href="http://get.webgl.org" target="_blank">follow this link</a> to know more about it.
+                </p>
+            </div>
+
         </div>
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
-        <script src="bower_components/jquery/jquery.js"></script>
         <script src="bower_components/threejs/build/three.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
@@ -98,6 +125,7 @@
 
         <!-- build:js({app,.tmp}) scripts/main.js -->
         <script src="scripts/main.js"></script>
+        <script src="scripts/overlay.js"></script>
         <!-- endbuild -->
 
         
