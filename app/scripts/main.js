@@ -13,16 +13,16 @@ function requestFullscreen () {
 		if ( document.fullscreenElement === element || document.mozFullscreenElement === element 
 			|| document.mozFullScreenElement === element ) {
 			document.removeEventListener( 'fullscreenchange', fullscreenchange );
-			document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
-			element.requestPointerLock();
-		}
+		document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
+		element.requestPointerLock();
 	}
+}
 
-	document.addEventListener( 'fullscreenchange', fullscreenchange, false );
-	document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
+document.addEventListener( 'fullscreenchange', fullscreenchange, false );
+document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
 
-	element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-	element.requestFullscreen();
+element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+element.requestFullscreen();
 }
 
 function initBrowser () {
@@ -79,7 +79,7 @@ function initBrowser () {
 				element.requestPointerLock();
 
 			} else {
-
+				requestFullscreen();
 				element.requestPointerLock();
 
 			}
@@ -192,10 +192,10 @@ function addSkybox() {
 
 	var materialArray = [];
 	for (var i in urls) {
-	    materialArray.push( new THREE.MeshBasicMaterial({
-	        map: THREE.ImageUtils.loadTexture(urls[i], new THREE.UVMapping(), function () {}),
-	        side: THREE.BackSide
-	    }));
+		materialArray.push( new THREE.MeshBasicMaterial({
+			map: THREE.ImageUtils.loadTexture(urls[i], new THREE.UVMapping(), function () {}),
+			side: THREE.BackSide
+		}));
 	}
 	var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
 	var skyGeometry = new THREE.CubeGeometry(opts.size, opts.size, opts.size);    
@@ -240,7 +240,7 @@ function initHeightMap () {
 	//   that is within specially labelled script tags
 	var customMaterial = new THREE.ShaderMaterial( 
 	{
-	    uniforms: customUniforms,
+		uniforms: customUniforms,
 		vertexShader:   document.getElementById('vertexShader').textContent,
 		fragmentShader: document.getElementById('fragmentShader').textContent,
 	}   
@@ -249,9 +249,9 @@ function initHeightMap () {
 	var landGeometry = new THREE.PlaneGeometry( 2000, 2000, 50, 50);
 	landGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 	landGeometry.computeFaceNormals();
-    landGeometry.computeVertexNormals();
-    landGeometry.computeTangents();
-    var planeSurface = new THREE.Mesh(landGeometry, customMaterial);
+	landGeometry.computeVertexNormals();
+	landGeometry.computeTangents();
+	var planeSurface = new THREE.Mesh(landGeometry, customMaterial);
 	scene.add( planeSurface );
 }
 
