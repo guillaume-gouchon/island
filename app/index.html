@@ -1,0 +1,105 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>island</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css styles/vendor.css -->
+        <!-- bower:css -->
+
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+        <script src="bower_components/modernizr/modernizr.js"></script>
+
+    </head>
+    <body>
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+        <div class="container"></div>
+
+        <div id="blocker">
+            <div id="instructions">
+                <div>Click to play</div>
+                <div>(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)</div>
+            </div>
+        </div>
+
+        <!-- build:js scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/threejs/build/three.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>
+
+        <!-- build:js scripts/plugins.js -->
+        <script src="scripts/plugins/PointerLockControls.js"></script>
+        <!-- endbuild -->
+
+        <script id="vertexShader" type="x-shader/x-vertex">
+        uniform sampler2D bumpTexture;
+        uniform float bumpScale;
+
+        varying float vAmount;
+        varying vec2 vUV;
+
+        void main() 
+        { 
+            vUV = uv;
+            vec4 bumpData = texture2D( bumpTexture, uv );
+            
+            vAmount = bumpData.r; // assuming map is grayscale it doesn't matter if you use r, g, or b.
+            
+            // move the position along the normal
+            vec3 newPosition = position + normal * bumpScale * vAmount;
+            
+            gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 ); 
+        }
+        </script>
+        <script id="fragmentShader" type="x-shader/x-vertex">
+        uniform sampler2D sandyTexture;
+        uniform sampler2D grassTexture;
+        uniform sampler2D rockyTexture;
+        uniform sampler2D tFog;
+
+        varying vec2 vUV;
+
+        varying float vAmount;
+
+        void main() 
+        {
+            vec4 sandy = (smoothstep(0.01, 0.02, vAmount) - smoothstep(0.03, 0.25, vAmount)) * texture2D( sandyTexture, vUV * 10.0 );
+            vec4 grass = (smoothstep(0.03, 0.50, vAmount) - smoothstep(0.40, 0.70, vAmount)) * texture2D( grassTexture, vUV * 20.0 );
+            vec4 rocky = (smoothstep(0.50, 0.65, vAmount) * texture2D( rockyTexture, vUV * 20.0));
+            gl_FragColor = vec4((sandy + grass + rocky).xyz, 1.0);
+        }  
+        </script>
+
+        <!-- build:js({app,.tmp}) scripts/main.js -->
+        <script src="scripts/main.js"></script>
+        <!-- endbuild -->
+
+        
+</body>
+</html>
