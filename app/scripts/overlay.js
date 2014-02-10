@@ -39,8 +39,35 @@ function requestFullscreen () {
 	document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
 
 	// Ask the browser for fullscreen mode
-	element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-	element.requestFullscreen();
+	// element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+	// element.requestFullscreen();
+	if (element.requestFullscreen) {
+		// W3C standard
+		element.requestFullscreen();
+	} else if (element.mozRequestFullScreen) {
+		// Firefox 10+, Firefox for Android
+		element.mozRequestFullScreen();
+	} else if (element.msRequestFullscreen) {
+		// IE 11+
+		element.msRequestFullscreen();
+	} else if (element.webkitRequestFullscreen) {
+		if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+			// Safari 6+
+			element.webkitRequestFullscreen();
+		} else {
+			// Chrome 20+, Opera 15+, Chrome for Android, Opera Mobile 16+
+			element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+		}
+	} else if (element.webkitRequestFullScreen) {
+		if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+			// Safari 5.1+
+			element.webkitRequestFullScreen();
+		} else {
+			// Chrome 15+
+			element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+		}
+	}
+
 }
 
 

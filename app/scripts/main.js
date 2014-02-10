@@ -5,7 +5,7 @@ var skybox;
 var ray;
 var models = {};
 var objects = [];
-var assetsPath = 'assets/'
+var assetsPath = 'assets/';
 
 
 function initScene() {
@@ -61,9 +61,9 @@ function onWindowResize() {
 
 }
 
-function loop() {
+function animate() {
 
-	requestAnimationFrame( loop );
+	requestAnimationFrame( animate );
 
 	controls.isOnObject( false );
 
@@ -245,5 +245,5 @@ function addRandomTrees () {
 
 
 // initBrowser();
-// initScene();
-// loop();
+initScene();
+animate();
