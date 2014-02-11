@@ -5,14 +5,10 @@
 var clickZone = document.getElementById('clickZone');
 
 function start () {
-	clickZone.removeEventListener('click', start);
-
 	// hide blocker
 	var blocker = document.getElementById('blocker');
 	blocker.classList.add('hidden');
 	setTimeout(function () {
-		document.body.removeChild(blocker);
-
 		// request browser's fullscreen and pointer lock
 		requestFullscreen();
 		requestPointerLock();
@@ -28,15 +24,22 @@ function requestFullscreen () {
 	var element = document.body;
 
 	var fullscreenchange = function ( event ) {
-		if ( document.fullscreenElement === element || document.mozFullscreenElement === element 
-			|| document.mozFullScreenElement === element ) {
-			document.removeEventListener( 'fullscreenchange', fullscreenchange );
-			document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
+		if ( !(document.fullscreenElement === element || document.mozFullscreenElement === element || 
+					document.mozFullScreenElement === element || document.webkitFullscreenElement === element ||
+					document.webkitfullscreenElement === element)) {
+			// Exiting fullscreen mode: overlay the instruction screen and disable mouse control
+			var blocker = document.getElementById('blocker');
+			blocker.classList.remove('hidden');
+			controls.enabled = false;
+		} else {
+			// Entering fullscreen mode: enable the mouse control
+			controls.enabled = true;
 		}
 	}
 
 	document.addEventListener( 'fullscreenchange', fullscreenchange, false );
 	document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
+	document.addEventListener( 'webkitfullscreenchange', fullscreenchange, false );
 
 	// Ask the browser for fullscreen mode
 	if (element.requestFullscreen) {
@@ -54,7 +57,7 @@ function requestFullscreen () {
 			element.webkitRequestFullscreen();
 		} else {
 			// Chrome 20+, Opera 15+, Chrome for Android, Opera Mobile 16+
-			element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			element.webkitRequestFullscreen(element.ALLOW_KEYBOARD_INPUT);
 		}
 	} else if (element.webkitRequestFullScreen) {
 		if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
@@ -62,7 +65,7 @@ function requestFullscreen () {
 			element.webkitRequestFullScreen();
 		} else {
 			// Chrome 15+
-			element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+			element.webkitRequestFullScreen(element.ALLOW_KEYBOARD_INPUT);
 		}
 	}
 

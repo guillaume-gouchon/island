@@ -13,6 +13,10 @@ body {
 	opacity: 0;
 }
 
+.black-overlay {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
 #blocker {
 	position: absolute;
 	height: 100%;

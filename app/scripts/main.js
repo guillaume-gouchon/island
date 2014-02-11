@@ -19,7 +19,6 @@ function createScene() {
 
 	// setup controls
 	controls = new THREE.PointerLockControls(camera);
-	controls.enabled = true;
 	scene.add(controls.getObject());
 
 	// setup main raycaster
