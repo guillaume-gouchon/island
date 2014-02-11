@@ -3,18 +3,18 @@ var landGeometry;
 
 function initHeightMap () {
 
-	var bumpTexture = new THREE.ImageUtils.loadTexture( assetsPath + 'heightmap.png' );
+	var bumpTexture = new THREE.ImageUtils.loadTexture( assetsPath  + 'heightmap.png' );
 	bumpTexture.wrapS = bumpTexture.wrapT = THREE.RepeatWrapping; 
 	// magnitude of normal displacement
 	var bumpScale = 500.0;
 
-	var sandyTexture = new THREE.ImageUtils.loadTexture( assetsPath + 'soil_gravel.png' );
+	var sandyTexture = new THREE.ImageUtils.loadTexture( assetsPath  + 'textures/soil_gravel.png' );
 	sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping; 
 	
-	var grassTexture = new THREE.ImageUtils.loadTexture( assetsPath + 'moss_gravel_dense.png' );
+	var grassTexture = new THREE.ImageUtils.loadTexture( assetsPath  + 'textures/moss_gravel_dense.png' );
 	grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping; 
 
-	var rockyTexture = new THREE.ImageUtils.loadTexture( assetsPath + 'rock_rough_mossy.png' );
+	var rockyTexture = new THREE.ImageUtils.loadTexture( assetsPath  + 'textures/rock_rough_mossy.png' );
 	rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping; 
 
 	var customUniforms = {
