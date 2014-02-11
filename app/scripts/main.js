@@ -1,4 +1,5 @@
 var camera, scene, renderer, controls, loader, ray, sunLight;
+var user;
 var time = Date.now();
 var models = {};
 var objects = [];
@@ -19,7 +20,7 @@ function createScene() {
 
 	// setup controls
 	controls = new THREE.PointerLockControls(camera);
-	var user = controls.getObject();
+	user = controls.getObject();
 	user.position.y = 500;
 	scene.add(user);
 
@@ -61,7 +62,7 @@ function animate() {
 	ray.ray.origin.copy(controls.getObject().position);
 	ray.ray.origin.y -= 10;
 
-	var intersections = ray.intersectObjects(objects);
+	var intersections = ray.intersectObjects([landGeometry]);
 	if (intersections.length > 0) {
 		var distance = intersections[0].distance;
 		if (distance > 0 && distance < 10) {
