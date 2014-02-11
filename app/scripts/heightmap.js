@@ -1,3 +1,4 @@
+var terrainSize = 7000;
 
 function initHeightMap () {
 
@@ -33,7 +34,7 @@ function initHeightMap () {
 	}   
 	);
 
-	var landGeometry = new THREE.PlaneGeometry( 7000, 7000, 256, 256);
+	var landGeometry = new THREE.PlaneGeometry(terrainSize, terrainSize, 256, 256);
 	landGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 	landGeometry.computeFaceNormals();
 	landGeometry.computeVertexNormals();

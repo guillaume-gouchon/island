@@ -18,7 +18,7 @@ function addWater () {
 
 
 	var mirrorMesh = new THREE.Mesh(
-		new THREE.PlaneGeometry(7000, 7000, 50, 50), 
+		new THREE.PlaneGeometry(terrainSize * 3, terrainSize * 3, 50, 50), 
 		water.material
 	);
 	

@@ -10,11 +10,9 @@ function createScene() {
 	scene = new THREE.Scene();
 
 	// setup camera
-	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 20000);
-	camera.position.y = 300;
+	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 30000);
 
 	// setup lights
-
 	sunLight = new THREE.DirectionalLight(0xffff55, 1);
 	sunLight.position.set(-1, 0.4, -1);
 	scene.add(sunLight);
@@ -34,6 +32,7 @@ function createScene() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 
+	// setup resize window callback
 	window.addEventListener('resize', onWindowResize, false);
 
 	// setup models loader
