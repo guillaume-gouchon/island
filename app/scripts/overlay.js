@@ -9,7 +9,7 @@ function start () {
 
 	// hide blocker, then remove it
 	var blocker = document.getElementById('blocker');
-	blocker.classList.add('hide');
+	blocker.classList.add('hidden');
 	setTimeout(function () {
 		document.body.removeChild(blocker);
 
@@ -39,8 +39,6 @@ function requestFullscreen () {
 	document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
 
 	// Ask the browser for fullscreen mode
-	// element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-	// element.requestFullscreen();
 	if (element.requestFullscreen) {
 		// W3C standard
 		element.requestFullscreen();
@@ -107,7 +105,7 @@ var credits = document.getElementById('credits');
 var creditsLink = credits.getElementsByClassName('link')[0];
 
 function showCredits () {
-	credits.getElementsByClassName('content')[0].classList.remove('hide');
+	credits.getElementsByClassName('content')[0].classList.remove('hidden');
 	credits.removeEventListener('click', showCredits);
 }
 
