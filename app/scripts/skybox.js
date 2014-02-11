@@ -27,6 +27,6 @@ function initSkybox () {
 	scene.add(skybox);
 }
 
-function rotateSkybox () {
+function animateSkybox () {
 	skybox.rotation.y += de2ra(0.005);
 }

@@ -5,7 +5,7 @@
 var clickZone = document.getElementById('clickZone');
 
 function start () {
-	// hide blocker, then remove it
+	// hide blocker
 	var blocker = document.getElementById('blocker');
 	blocker.classList.add('hidden');
 	setTimeout(function () {
