@@ -11,7 +11,7 @@ function createScene() {
 
 	// setup camera
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 20000);
-	camera.position.y = 300;
+	// camera.position.y = 300;
 
 	// setup lights
 	var light = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -24,7 +24,6 @@ function createScene() {
 
 	// setup controls
 	controls = new THREE.PointerLockControls(camera);
-	controls.enabled = true;
 	scene.add(controls.getObject());
 
 	// setup main raycaster
