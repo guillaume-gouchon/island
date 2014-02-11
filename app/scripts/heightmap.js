@@ -1,4 +1,4 @@
-var terrainSize = 7000;
+var terrainSize = 5120;
 
 function initHeightMap () {
 
@@ -24,23 +24,68 @@ function initHeightMap () {
 		rockyTexture:	{ type: "t", value: rockyTexture },
 	};
 
+	attributes = {
+		needsUpdate: true
+	};
+
 	// create custom material from the shader code above
 	// that is within specially labelled script tags
 	var customMaterial = new THREE.ShaderMaterial( 
 	{
-		uniforms: customUniforms,
+		uniforms: 		customUniforms,
+		attributes:     attributes,
 		vertexShader:   document.getElementById('vertexShader').textContent,
 		fragmentShader: document.getElementById('fragmentShader').textContent,
 	}   
 	);
 
-	var landGeometry = new THREE.PlaneGeometry(terrainSize, terrainSize, 256, 256);
+	landGeometry = new THREE.PlaneGeometry(terrainSize, terrainSize, 256, 256);
 	landGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
-	landGeometry.computeFaceNormals();
-	landGeometry.computeVertexNormals();
-	landGeometry.computeTangents();
+	landGeometry.dynamic = true;
+	landGeometry.verticesNeedUpdate = true;
+	landGeometry.elementsNeedUpdate = true;
+	landGeometry.uvsNeedUpdate = true;
+	landGeometry.normalsNeedUpdate = true;
 
-	var planeSurface = new THREE.Mesh(landGeometry, customMaterial);
-	scene.add(planeSurface);
+
+	var img = new Image(); 
+	img.src = assetsPath + "heightmap.png";
+	img.onload = function () {
+
+		// get image values
+	    var canvas = document.createElement('canvas');
+	    canvas.id = 'heightDataCanvas';
+	    canvas.width = img.width;
+	    canvas.height = img.height;
+	    var context = canvas.getContext('2d');
+	    var size = img.width * img.height; 
+	    context.drawImage(img, 0, 0);
+	    var imgd = context.getImageData(0, 0, img.width, img.height);
+	    var pix = imgd.data;
+
+	    // update land geometry vertices according to heightmap
+	    var vertices = landGeometry.vertices;
+	    var minX = - terrainSize / 2,
+	    	maxX = - minX,
+	    	minY = - terrainSize / 2,
+	    	maxY = - minY;
+	    for (var i in vertices) {
+	    	var x = (vertices[i].x - minX) / (maxX - minX) * img.width,
+	    	z = (vertices[i].z - minY) / (maxY - minY) * img.height;
+	    	var pixIndex = (Math.floor(x) + Math.floor(z) * img.width) * 4;
+	    	vertices[i].y = pix[pixIndex] / 255.0 * bumpScale;
+	    }
+
+	    console.log(landGeometry.faces[41000].normal)
+	    landGeometry.applyMatrix(new THREE.Matrix4().makeScale(1, 1, 1));
+
+		landGeometry.computeFaceNormals();
+		landGeometry.computeVertexNormals();
+		console.log(landGeometry.faces[41000].normal)
+
+		var planeSurface = new THREE.Mesh(landGeometry,  new THREE.MeshNormalMaterial());
+		scene.add(planeSurface);
+		objects.push(planeSurface);
+	};
 
 }

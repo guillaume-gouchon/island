@@ -13,7 +13,7 @@ function createScene() {
 
 	// setup camera
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 30000);
-	camera.position.y = 500;
+
 	// setup lights
 	sunLight = new THREE.DirectionalLight(0xffff55, 1);
 	sunLight.position.set(-1, 0.4, -1);
@@ -21,8 +21,9 @@ function createScene() {
 
 	// setup controls
 	controls = new THREE.PointerLockControls(camera);
-	console.log(controls)
-	scene.add(controls.getObject());
+	var user = controls.getObject();
+	user.position.y = 500;
+	scene.add(user);
 
 	// setup main raycaster
 	ray = new THREE.Raycaster();
@@ -59,25 +60,21 @@ function animate() {
 
 	controls.isOnObject(false);
 
-	ray.ray.origin.copy( controls.getObject().position );
+	ray.ray.origin.copy(controls.getObject().position);
 	ray.ray.origin.y -= 10;
 
-	var intersections = ray.intersectObjects( objects );
-
-	if ( intersections.length > 0 ) {
-
-		var distance = intersections[ 0 ].distance;
-
-		if ( distance > 0 && distance < 10 ) {
-
-			controls.isOnObject( true );
-
+	var intersections = ray.intersectObjects(objects);
+	if (intersections.length > 0) {
+		var distance = intersections[0].distance;
+		if (distance > 0 && distance < 10) {
+			controls.isOnObject(true);
 		}
 
 	}
 
 	var delta = Date.now() - time;
 	controls.update(delta);
+
 
 	animateSkybox();
 	animateWater();
