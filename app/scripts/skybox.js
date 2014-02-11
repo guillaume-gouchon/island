@@ -5,7 +5,7 @@ function initSkybox () {
 		folder: assetsPath,
 		skyboxName: 'comawhite',
 		filetype: '.jpg',
-		size: 10000
+		size: 30000
 	};
 
 	var urls = [];

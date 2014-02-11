@@ -17,10 +17,7 @@ function addWater () {
 	});
 
 
-	var mirrorMesh = new THREE.Mesh(
-		new THREE.PlaneGeometry(terrainSize * 3, terrainSize * 3, 50, 50), 
-		water.material
-	);
+	var mirrorMesh = new THREE.Mesh(new THREE.PlaneGeometry(terrainSize * 5, terrainSize * 5, 50, 50), water.material);
 	
 	mirrorMesh.add(water);
 	mirrorMesh.position.y = 25;
