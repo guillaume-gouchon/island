@@ -3,6 +3,8 @@ var time = Date.now();
 var models = {};
 var objects = [];
 var assetsPath = 'assets/';
+var animals = {birds: []};
+var birdsRotation = 1;
 
 
 function createScene() {
@@ -11,7 +13,7 @@ function createScene() {
 
 	// setup camera
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 30000);
-camera.position.y = 500;
+	camera.position.y = 500;
 	// setup lights
 	sunLight = new THREE.DirectionalLight(0xffff55, 1);
 	sunLight.position.set(-1, 0.4, -1);
@@ -43,7 +45,7 @@ camera.position.y = 500;
 	initHeightMap();
 	addWater();
 	loadAssets();
-
+	loadBirds();
 }
 
 function onWindowResize() {
@@ -74,10 +76,12 @@ function animate() {
 
 	}
 
-	controls.update(Date.now() - time);
+	var delta = Date.now() - time;
+	controls.update(delta);
 
 	animateSkybox();
 	animateWater();
+	animateBirds(delta);
 
 	renderer.render(scene, camera);
 
@@ -111,6 +115,11 @@ function loadAssets() {
 	this.loader.load(assetsPath + 'cedar.js', geometryLoaded());
 }
 
+function loadBirds() {
+	this.loader.load(assetsPath + 'animals/flamingo.js', birdLoaded());
+	this.loader.load(assetsPath + 'animals/parrot.js', birdLoaded());
+	this.loader.load(assetsPath + 'animals/stork.js', birdLoaded());
+}
 
 /**
 *	Callback when a geometry is loaded.
@@ -120,6 +129,62 @@ function geometryLoaded () {
 		models.swamptree = { geometry: geometry, materials: materials };
 		addRandomTrees();
 	};
+}
+
+function birdLoaded() {
+	return function(geometry, materials) {
+		models.bird = { geometry: geometry, materials: materials};
+		addBirds();
+	}
+}
+
+function addBirds() {
+	// Colorize the birds
+	if ( models.bird.geometry.morphColors && models.bird.geometry.morphColors.length ) {
+		var colorMap = models.bird.geometry.morphColors[ 0 ];
+		for ( var i = 0; i < colorMap.colors.length; i ++ ) {
+			models.bird.geometry.faces[ i ].color = colorMap.colors[ i ];
+		}
+	}
+
+
+	models.bird.geometry.computeMorphNormals();
+
+	for (var i = 0; i < 25; i++) {
+		var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff, 
+			shininess: 20, morphTargets: true, morphNormals: true, vertexColors: THREE.FaceColors, 
+			shading: THREE.SmoothShading } );
+		var bird = new THREE.MorphAnimMesh( models.bird.geometry, material );
+
+		bird.duration = 5000;
+
+		bird.scale.set( Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.5 );
+		
+		// var bird = new THREE.Mesh(models.bird.geometry, new THREE.MeshFaceMaterial(models.bird.materials));
+		bird.position = {
+			x: Math.random() * 5 * terrainSize - terrainSize,
+			y: 400 + Math.random() * 300,
+			z: Math.random() * 5 * terrainSize - terrainSize
+		}
+		animals.birds.push( bird );
+		scene.add( bird );
+	}
+}
+
+function animateBirds(delta) {
+	if (animals.birds && animals.birds !== []) {
+		birdsRotation += 5;
+		for (var i in animals.birds) {
+			var bird = animals.birds[i];
+			if (bird.position.z >= terrainSize) {
+				bird.position.z = -terrainSize;
+			} else {
+				bird.position.z += 10 + Math.random() * 5 -2; // Speed
+				bird.position.y += Math.random() * 2 - 1; // Height
+			}
+			bird.updateAnimation(10 * delta);
+		}
+	}
 }
 
 function addRandomTrees () {
