@@ -1,4 +1,5 @@
 var terrainSize = 5120;
+var landGeometry;
 
 function initHeightMap () {
 
@@ -39,14 +40,9 @@ function initHeightMap () {
 	}   
 	);
 
-	landGeometry = new THREE.PlaneGeometry(terrainSize, terrainSize, 256, 256);
-	landGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
+	landGeometry = new THREE.PlaneGeometry(terrainSize, terrainSize, 255, 255);
+	landGeometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2));
 	landGeometry.dynamic = true;
-	landGeometry.verticesNeedUpdate = true;
-	landGeometry.elementsNeedUpdate = true;
-	landGeometry.uvsNeedUpdate = true;
-	landGeometry.normalsNeedUpdate = true;
-
 
 	var img = new Image(); 
 	img.src = assetsPath + "heightmap.png";
@@ -76,14 +72,10 @@ function initHeightMap () {
 	    	vertices[i].y = pix[pixIndex] / 255.0 * bumpScale;
 	    }
 
-	    console.log(landGeometry.faces[41000].normal)
-	    landGeometry.applyMatrix(new THREE.Matrix4().makeScale(1, 1, 1));
+	    landGeometry.computeFaceNormals();
+    	landGeometry.computeCentroids();
 
-		landGeometry.computeFaceNormals();
-		landGeometry.computeVertexNormals();
-		console.log(landGeometry.faces[41000].normal)
-
-		var planeSurface = new THREE.Mesh(landGeometry,  new THREE.MeshNormalMaterial());
+		var planeSurface = new THREE.Mesh(landGeometry, customMaterial);
 		scene.add(planeSurface);
 		objects.push(planeSurface);
 	};
