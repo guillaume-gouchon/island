@@ -1,4 +1,4 @@
-var camera, scene, renderer, controls, loader, ray;
+var camera, scene, renderer, controls, loader, ray, sunLight;
 var time = Date.now();
 var models = {};
 var objects = [];
@@ -14,13 +14,10 @@ function createScene() {
 	camera.position.y = 300;
 
 	// setup lights
-	var light = new THREE.DirectionalLight(0xffffff, 1.5);
-	light.position.set(1, 1, 1);
-	scene.add(light);
 
-	var light = new THREE.DirectionalLight(0xffffff, 0.75);
-	light.position.set(-1, - 0.5, -1);
-	scene.add(light);
+	sunLight = new THREE.DirectionalLight(0xffff55, 1);
+	sunLight.position.set(-1, 0.4, -1);
+	scene.add(sunLight);
 
 	// setup controls
 	controls = new THREE.PointerLockControls(camera);
@@ -45,7 +42,9 @@ function createScene() {
 	// add elements
 	initSkybox();
 	initHeightMap();
+	addWater();
 	loadAssets();
+
 }
 
 function onWindowResize() {
@@ -78,21 +77,34 @@ function animate() {
 
 	controls.update(Date.now() - time);
 
+	animateSkybox();
+	animateWater();
+
 	renderer.render(scene, camera);
 
 	time = Date.now();
 
-	rotateSkybox();
 }
 
 
 /*
 **	START SCENE CREATION
 */
-// document.addEventListener('onDOMLoaded', function () {
+onDOMLoaded(function () {
 	createScene();
 	animate();
-// });
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 
