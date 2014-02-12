@@ -3,40 +3,49 @@ var landGeometry;
 
 function initHeightMap () {
 
-	var bumpTexture = new THREE.ImageUtils.loadTexture( assetsPath  + 'heightmap.png' );
-	bumpTexture.wrapS = bumpTexture.wrapT = THREE.RepeatWrapping; 
 	// magnitude of normal displacement
-	var bumpScale = 500.0;
+	var bumpScale = 300.0;
 
-	var sandyTexture = new THREE.ImageUtils.loadTexture( assetsPath  + 'textures/soil_gravel.png' );
-	sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping; 
-	
-	var grassTexture = new THREE.ImageUtils.loadTexture( assetsPath  + 'textures/moss_gravel_dense.png' );
-	grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping; 
-
-	var rockyTexture = new THREE.ImageUtils.loadTexture( assetsPath  + 'textures/rock_rough_mossy.png' );
-	rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping; 
+	// heightmap image
+	var bumpTexture = new THREE.ImageUtils.loadTexture(assetsPath  + 'heightmap.png');
+	bumpTexture.wrapS = bumpTexture.wrapT = THREE.RepeatWrapping; 
 
 	var customUniforms = {
 		bumpScale: 		{ type: "f", value: bumpScale },
-		bumpTexture:	{ type: "t", value: bumpTexture },
-		sandyTexture:	{ type: "t", value: sandyTexture },
-		grassTexture:	{ type: "t", value: grassTexture },
-		rockyTexture:	{ type: "t", value: rockyTexture },
+		bumpTexture:	{ type: "t", value: bumpTexture }
 	};
 
-	attributes = {
+	// setup heigthmap textures
+	var textures = [
+		{ name: 'sand', params: [0.001, 0.20, 0.16, 0.35, '10.0'] },
+		// { name: 'gravelDark', params: [0.19, 0.27, 0.28, 0.31, '10.0'] },
+		{ name: 'mossDense', params: [0.14, 0.42, 0.41, 0.43, '20.0'] },
+		{ name: 'mossMedium', params: [0.41, 0.43, 0.42, 0.55, '20.0'] },
+		// { name: 'mossSparse', params: [0.01, 0.03, 0.03, 0.25, '10.0'] },
+		{ name: 'rockMossy', params: [0.42, 0.65, 0, 0, '10.0'] },
+		// { name: 'rock', params: [0.50, 0.65, 0, 0, '10.0'] }
+	];
+	for (var i = 0; i < textures.length; i++) {
+		var texture = new THREE.ImageUtils.loadTexture(assetsPath  + 'textures/' + textures[i].name + '.png');
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		customUniforms[textures[i].name + 'Texture'] = { type: "t", value: texture };
+	}
+	var heightmapShaders = new HeightmapShaders(textures);
+
+	// update fragment shaders with textures
+	var attributes = {
 		needsUpdate: true
 	};
 
+console.log(customUniforms)
 	// create custom material from the shader code above
 	// that is within specially labelled script tags
 	var customMaterial = new THREE.ShaderMaterial( 
 	{
 		uniforms: 		customUniforms,
 		attributes:     attributes,
-		vertexShader:   document.getElementById('vertexShader').textContent,
-		fragmentShader: document.getElementById('fragmentShader').textContent,
+		vertexShader:   heightmapShaders.vertexShader,
+		fragmentShader: heightmapShaders.fragmentShader,
 	}   
 	);
 

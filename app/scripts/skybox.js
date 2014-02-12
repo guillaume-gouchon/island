@@ -2,7 +2,7 @@ var skybox;
 
 function initSkybox () {
 	var opts = {
-		folder: assetsPath,
+		folder: assetsPath + 'skybox/',
 		skyboxName: 'comawhite',
 		filetype: '.jpg',
 		size: 30000

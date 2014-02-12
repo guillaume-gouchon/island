@@ -24,9 +24,13 @@ function addWater () {
 	mirrorMesh.rotation.x = - Math.PI * 0.5;
 	scene.add(mirrorMesh);
 
+
+	water.sound = new Sound(assetsPath + 'sounds/sound', terrainSize / 4, 1);
+	water.sound.play();
 }
 
 function animateWater () {
 	water.material.uniforms.time.value += 1.0 / 60.0;
 	water.render();
+	water.sound.update(controls.getObject());
 }

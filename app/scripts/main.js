@@ -14,6 +14,7 @@ function createScene() {
 
 	// setup camera
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 30000);
+camera.position.y = 500;
 
 	// setup lights
 	sunLight = new THREE.DirectionalLight(0xffff55, 1);
@@ -24,6 +25,7 @@ function createScene() {
 	controls = new THREE.PointerLockControls(camera);
 	user = controls.getObject();
 	user.position.y = 500;
+		user.position.z = 1000;
 	scene.add(user);
 
 	// setup main raycaster
@@ -137,6 +139,8 @@ function birdLoaded() {
 }
 
 function addBirds() {
+
+
 	// Colorize the birds
 	if ( models.bird.geometry.morphColors && models.bird.geometry.morphColors.length ) {
 		var colorMap = models.bird.geometry.morphColors[ 0 ];
