@@ -13,8 +13,7 @@ var Sound = function ( soundFilePath, radius, volume ) {
 	audio.appendChild(source);
 
 	this.play = function () {
-		console.log(audio.src)
-		audio.play();
+		// audio.play();
 	}
 
 	var centerPoint = new THREE.Particle();

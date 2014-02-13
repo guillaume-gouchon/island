@@ -43,5 +43,5 @@ var HeightmapShaders = function (textures) {
     }
 
     this.fragmentShader += 'gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0) + ' + textureSum + ';\n}\n';
-console.log(this.fragmentShader)
+
 };

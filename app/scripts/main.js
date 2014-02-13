@@ -14,7 +14,6 @@ function createScene() {
 
 	// setup camera
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 30000);
-camera.position.y = 500;
 
 	// setup lights
 	sunLight = new THREE.DirectionalLight(0xffff55, 1);
@@ -24,8 +23,7 @@ camera.position.y = 500;
 	// setup controls
 	controls = new THREE.PointerLockControls(camera);
 	user = controls.getObject();
-	user.position.y = 500;
-		user.position.z = 1000;
+	user.position.y = 100;
 	scene.add(user);
 
 	// setup main raycaster
@@ -66,8 +64,10 @@ function animate() {
 	ray.ray.origin.copy(controls.getObject().position);
 	ray.ray.origin.y -= 10;
 
-	var intersections = ray.intersectObjects([landGeometry]);
+	var intersections = ray.intersectObjects(objects);
+
 	if (intersections.length > 0) {
+		console.log(intersections)
 		var distance = intersections[0].distance;
 		if (distance > 0 && distance < 10) {
 			controls.isOnObject(true);

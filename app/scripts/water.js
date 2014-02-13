@@ -17,13 +17,11 @@ function addWater () {
 	});
 
 
-	var mirrorMesh = new THREE.Mesh(new THREE.PlaneGeometry(terrainSize * 5, terrainSize * 5, 50, 50), water.material);
-	
+	var mirrorMesh = new THREE.Mesh(new THREE.PlaneGeometry(terrainSize * 5, terrainSize * 5, 50, 50), water.material);	
 	mirrorMesh.add(water);
 	mirrorMesh.position.y = 25;
 	mirrorMesh.rotation.x = - Math.PI * 0.5;
 	scene.add(mirrorMesh);
-
 
 	water.sound = new Sound(assetsPath + 'sounds/sound', terrainSize / 4, 1);
 	water.sound.play();

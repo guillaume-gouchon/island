@@ -37,7 +37,7 @@ function initHeightMap () {
 		needsUpdate: true
 	};
 
-console.log(customUniforms)
+
 	// create custom material from the shader code above
 	// that is within specially labelled script tags
 	var customMaterial = new THREE.ShaderMaterial( 
@@ -49,7 +49,7 @@ console.log(customUniforms)
 	}   
 	);
 
-	landGeometry = new THREE.PlaneGeometry(terrainSize, terrainSize, 255, 255);
+	landGeometry = new THREE.CubeGeometry(terrainSize, terrainSize, 10, 255, 255);
 	landGeometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2));
 	landGeometry.dynamic = true;
 
@@ -78,10 +78,13 @@ console.log(customUniforms)
 	    	var x = (vertices[i].x - minX) / (maxX - minX) * img.width,
 	    	z = (vertices[i].z - minY) / (maxY - minY) * img.height;
 	    	var pixIndex = (Math.floor(x) + Math.floor(z) * img.width) * 4;
-	    	vertices[i].y = pix[pixIndex] / 255.0 * bumpScale;
+	    	vertices[i].y = Math.pow(pix[pixIndex] / 255.0, 1.2) * bumpScale;
 	    }
 
+		landGeometry.verticesNeedUpdate = true;
+		landGeometry.computeTangents();
 	    landGeometry.computeFaceNormals();
+	    landGeometry.computeVertexNormals();    
     	landGeometry.computeCentroids();
 
 		var planeSurface = new THREE.Mesh(landGeometry, customMaterial);
