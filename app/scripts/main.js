@@ -7,7 +7,7 @@ var assetsPath = 'assets/';
 var animals = {birds: []};
 var birdsRotation = 1;
 
-var userHeight = 40;
+var userHeight = 50;
 
 
 function createScene() {

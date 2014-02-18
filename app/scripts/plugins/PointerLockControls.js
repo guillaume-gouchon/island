@@ -141,7 +141,10 @@ THREE.PointerLockControls = function ( camera ) {
 
 	}();
 
+	var t = 0;
+
 	this.update = function ( delta ) {
+		t += 0.15;
 
 		if ( scope.enabled === false ) return;
 
@@ -155,6 +158,15 @@ THREE.PointerLockControls = function ( camera ) {
 
 		if ( moveLeft ) velocity.x -= movementSpeed * delta;
 		if ( moveRight ) velocity.x += movementSpeed * delta;
+
+		if (moveForward || moveBackward || moveLeft || moveRight) {
+			if (moveForward || moveBackward) {
+				// rotate camera when walking
+				yawObject.rotation.z += 0.0003 * Math.cos(t * 2 / 3);
+			}
+			// udpate camera height when walking
+			yawObject.position.y += 0.18 * Math.cos(t);
+		}
 
 		yawObject.translateX( velocity.x );
 		yawObject.translateZ( velocity.z );
