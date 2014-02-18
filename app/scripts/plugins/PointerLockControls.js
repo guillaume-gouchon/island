@@ -157,9 +157,7 @@ THREE.PointerLockControls = function ( camera ) {
 		if ( moveRight ) velocity.x += 0.12 * delta;
 
 		if ( isOnObject === true ) {
-
-			velocity.y = Math.max( 0, velocity.y );
-
+			velocity.y = 0;
 		}
 
 		yawObject.translateX( velocity.x );

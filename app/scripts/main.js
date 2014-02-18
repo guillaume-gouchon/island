@@ -66,14 +66,19 @@ function animate() {
 
 	var intersections = ray.intersectObjects(objects);
 
-	if (intersections.length > 0) {
-		console.log(intersections)
-		var distance = intersections[0].distance;
-		if (distance > 0 && distance < 10) {
-			controls.isOnObject(true);
-		}
+	// if (intersections.length > 0) {
+	// 	console.log(intersections)
+	// 	var distance = intersections[0].distance;
+		// if (distance > 0 && distance < 10) {
 
+	var index = parseInt(255 * user.position.z / terrainSize) + 255 * parseInt(255 * user.position.x / terrainSize) 
+	var positionZ = landGeometry.vertices[index].y;
+
+	if (user.position.y <= positionZ) {
+		controls.isOnObject(true);
 	}
+
+	// }
 
 	var delta = Date.now() - time;
 	controls.update(delta);
