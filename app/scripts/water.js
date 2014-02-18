@@ -23,7 +23,7 @@ function addWater () {
 	mirrorMesh.rotation.x = - Math.PI * 0.5;
 	scene.add(mirrorMesh);
 
-	water.sound = new Sound(assetsPath + 'sounds/sound', terrainSize / 4, 1);
+	water.sound = new SeaSound(assetsPath + 'sounds/ocean', terrainSize / 4, 0.1);
 	water.sound.play();
 }
 

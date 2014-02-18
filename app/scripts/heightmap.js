@@ -4,7 +4,7 @@ var landGeometry;
  var grosseBidouille = null;
 
 
-function initHeightMap () {
+function initHeightMap (callback) {
 
 	// magnitude of normal displacement
 	var bumpScale = 300.0;
@@ -104,6 +104,8 @@ function initHeightMap () {
 		var planeSurface = new THREE.Mesh(landGeometry, customMaterial);
 		scene.add(planeSurface);
 		objects.push(planeSurface);
+
+		callback();
 	};
 
 }

@@ -47,10 +47,13 @@ function createScene() {
 
 	// add elements
 	initSkybox();
-	initHeightMap();
+	initHeightMap(function () {
+		loadAssets();
+		loadBirds();
+		animate();
+	});
 	addWater();
-	loadAssets();
-	loadBirds();
+
 }
 
 function onWindowResize() {
@@ -62,12 +65,8 @@ function onWindowResize() {
 function animate() {
 	requestAnimationFrame(animate);
 
-	controls.isOnObject(false);
-
-	if (grosseBidouille != null) {
-		var positionY = grosseBidouille[Math.floor(512 * (user.position.x + terrainSize / 2) / terrainSize)][Math.floor(512 * (user.position.z + terrainSize / 2) / terrainSize)];
-		user.position.y += (positionY + userHeight - user.position.y) * 0.05;
-	}
+	var positionY = grosseBidouille[Math.floor(512 * (user.position.x + terrainSize / 2) / terrainSize)][Math.floor(512 * (user.position.z + terrainSize / 2) / terrainSize)];
+	user.position.y += (positionY + userHeight - user.position.y) * 0.05;
 
 	var delta = Date.now() - time;
 	controls.update(delta);
@@ -88,7 +87,6 @@ function animate() {
 */
 onDOMLoaded(function () {
 	createScene();
-	animate();
 });
 
 
@@ -105,7 +103,7 @@ onDOMLoaded(function () {
 
 
 function loadAssets() {
-	this.loader.load(assetsPath + 'cedar.js', geometryLoaded());
+	this.loader.load(assetsPath + 'tree.js', geometryLoaded());
 }
 
 function loadBirds() {
@@ -119,7 +117,15 @@ function loadBirds() {
 */
 function geometryLoaded () {
 	return function (geometry, materials) {
-		models.swamptree = { geometry: geometry, materials: materials };
+		models.swamptree = { 
+			geometry: geometry, 
+			materials: new THREE.MeshLambertMaterial(
+				{
+					transparent: true, 
+					lights:true, 
+					map: THREE.ImageUtils.loadTexture(assetsPath + 'tree.png', new THREE.UVMapping())
+				})
+		};
 		addRandomTrees();
 	};
 }
@@ -127,7 +133,7 @@ function geometryLoaded () {
 function birdLoaded() {
 	return function(geometry, materials) {
 		models.bird = { geometry: geometry, materials: materials};
-		addBirds();
+		addBirds();materials
 	}
 }
 
@@ -183,13 +189,21 @@ function animateBirds(delta) {
 }
 
 function addRandomTrees () {
-	for (var i = 0; i < 1; i++) {
-		var tree = new THREE.Mesh(models.swamptree.geometry, new THREE.MeshFaceMaterial(models.swamptree.materials));
-		tree.position = {
-			x: 0,
-			y: 500,
-			z: 0
+	for (var i = 0; i < 500; i++) {
+		var xPosition = Math.random() * 512;
+		var zPosition = Math.random() * 512;
+		var yPosition = grosseBidouille[Math.floor(xPosition)][Math.floor(zPosition)];
+		
+		if (yPosition > 90 && yPosition < 125) {
+			// add tree
+			var tree = new THREE.Mesh(models.swamptree.geometry, models.swamptree.materials);
+			tree.position = {
+				x: xPosition * terrainSize / 512 - terrainSize / 2,
+				y: yPosition - 10,
+				z: zPosition * terrainSize / 512 - terrainSize / 2
+			}
+			tree.scale.set(4, 4, 4);
+			scene.add(tree);
 		}
-		scene.add(tree);
 	}
 }
