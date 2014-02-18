@@ -107,12 +107,12 @@ function loadAssets() {
 
 	models.grass = {
 		materials: [
-			new THREE.SpriteMaterial({ 
+			new THREE.SpriteMaterial({
 				color: 0xFFFFFF,
 				useScreenCoordinates:false,
 				map: THREE.ImageUtils.loadTexture(assetsPath + 'grass.png', new THREE.UVMapping())
 			}),
-			new THREE.SpriteMaterial({ 
+			new THREE.SpriteMaterial({
 				color: 0xFFFFFF,
 				useScreenCoordinates:false,
 				map: THREE.ImageUtils.loadTexture(assetsPath + 'grass2.png', new THREE.UVMapping(), addRandomGrass)
@@ -133,12 +133,12 @@ function loadBirds() {
 */
 function geometryLoaded (next) {
 	return function (geometry, materials) {
-		models.swamptree = { 
-			geometry: geometry, 
+		models.swamptree = {
+			geometry: geometry,
 			materials: new THREE.MeshLambertMaterial(
 				{
-					transparent: true, 
-					lights:true, 
+					transparent: true,
+					lights:true,
 					map: THREE.ImageUtils.loadTexture(assetsPath + 'tree.png', new THREE.UVMapping())
 				})
 		};
@@ -168,20 +168,20 @@ function addBirds() {
 	models.bird.geometry.computeMorphNormals();
 
 	for (var i = 0; i < 25; i++) {
-		var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff, 
-			shininess: 20, morphTargets: true, morphNormals: true, vertexColors: THREE.FaceColors, 
+		var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff,
+			shininess: 20, morphTargets: true, morphNormals: true, vertexColors: THREE.FaceColors,
 			shading: THREE.SmoothShading } );
 		var bird = new THREE.MorphAnimMesh( models.bird.geometry, material );
 
 		bird.duration = 5000;
 
 		bird.scale.set( Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.5 );
-		
+
 		// var bird = new THREE.Mesh(models.bird.geometry, new THREE.MeshFaceMaterial(models.bird.materials));
 		bird.position = {
-			x: Math.random() * 5 * terrainSize - terrainSize,
+			x: (Math.random() * 200 - 100) * terrainSize / 100,
 			y: 400 + Math.random() * 300,
-			z: Math.random() * 5 * terrainSize - terrainSize
+            z: (Math.random() * 200 - 100) * terrainSize / 100
 		}
 		animals.birds.push( bird );
 		scene.add( bird );
@@ -232,7 +232,7 @@ function addRandomTrees () {
 		var xPosition = Math.random() * 512;
 		var zPosition = Math.random() * 512;
 		var yPosition = grosseBidouille[Math.floor(xPosition)][Math.floor(zPosition)];
-		
+
 		if (yPosition > 85 && yPosition < 110) {
 			// add tree
 			var tree = new THREE.Mesh(models.swamptree.geometry, models.swamptree.materials);
