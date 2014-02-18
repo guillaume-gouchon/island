@@ -27,6 +27,8 @@ THREE.PointerLockControls = function ( camera ) {
 
 	var PI_2 = Math.PI / 2;
 
+	var movementSpeed = 0.1;
+
 	var onMouseMove = function ( event ) {
 
 		if ( scope.enabled === false ) return;
@@ -145,23 +147,16 @@ THREE.PointerLockControls = function ( camera ) {
 
 		delta *= 0.1;
 
-		velocity.x += ( - velocity.x ) * 0.08 * delta;
-		velocity.z += ( - velocity.z ) * 0.08 * delta;
+		velocity.x += ( - velocity.x ) * 0.1 * delta;
+		velocity.z += ( - velocity.z ) * 0.1 * delta;
 
-		velocity.y -= 0.25 * delta;
+		if ( moveForward ) velocity.z -= movementSpeed * delta;
+		if ( moveBackward ) velocity.z += movementSpeed * delta;
 
-		if ( moveForward ) velocity.z -= 0.12 * delta;
-		if ( moveBackward ) velocity.z += 0.12 * delta;
-
-		if ( moveLeft ) velocity.x -= 0.12 * delta;
-		if ( moveRight ) velocity.x += 0.12 * delta;
-
-		if ( isOnObject === true ) {
-			velocity.y = 0;
-		}
+		if ( moveLeft ) velocity.x -= movementSpeed * delta;
+		if ( moveRight ) velocity.x += movementSpeed * delta;
 
 		yawObject.translateX( velocity.x );
-		yawObject.translateY( velocity.y ); 
 		yawObject.translateZ( velocity.z );
 
 	};

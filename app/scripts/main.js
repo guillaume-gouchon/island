@@ -7,6 +7,8 @@ var assetsPath = 'assets/';
 var animals = {birds: []};
 var birdsRotation = 1;
 
+var userHeight = 40;
+
 
 function createScene() {
 
@@ -23,7 +25,8 @@ function createScene() {
 	// setup controls
 	controls = new THREE.PointerLockControls(camera);
 	user = controls.getObject();
-	user.position.y = 100;
+	user.position.y = 105;
+	user.position.z = 1000;
 	scene.add(user);
 
 	// setup main raycaster
@@ -61,28 +64,13 @@ function animate() {
 
 	controls.isOnObject(false);
 
-	ray.ray.origin.copy(controls.getObject().position);
-	ray.ray.origin.y -= 10;
-
-	var intersections = ray.intersectObjects(objects);
-
-	// if (intersections.length > 0) {
-	// 	console.log(intersections)
-	// 	var distance = intersections[0].distance;
-		// if (distance > 0 && distance < 10) {
-
-	var index = parseInt(255 * user.position.z / terrainSize) + 255 * parseInt(255 * user.position.x / terrainSize) 
-	var positionZ = landGeometry.vertices[index].y;
-
-	if (user.position.y <= positionZ) {
-		controls.isOnObject(true);
+	if (grosseBidouille != null) {
+		var positionY = grosseBidouille[Math.floor(512 * (user.position.x + terrainSize / 2) / terrainSize)][Math.floor(512 * (user.position.z + terrainSize / 2) / terrainSize)];
+		user.position.y += (positionY + userHeight - user.position.y) * 0.05;
 	}
-
-	// }
 
 	var delta = Date.now() - time;
 	controls.update(delta);
-
 
 	animateSkybox();
 	animateWater();

@@ -1,6 +1,9 @@
 var terrainSize = 5120;
 var landGeometry;
 
+ var grosseBidouille = null;
+
+
 function initHeightMap () {
 
 	// magnitude of normal displacement
@@ -78,7 +81,18 @@ function initHeightMap () {
 	    	var x = (vertices[i].x - minX) / (maxX - minX) * img.width,
 	    	z = (vertices[i].z - minY) / (maxY - minY) * img.height;
 	    	var pixIndex = (Math.floor(x) + Math.floor(z) * img.width) * 4;
-	    	vertices[i].y = Math.pow(pix[pixIndex] / 255.0, 1.2) * bumpScale;
+	    	var heightValue = Math.pow(pix[pixIndex] / 255.0, 1.2) * bumpScale;
+	    	vertices[i].y = heightValue;
+	    }
+
+	    grosseBidouille = [];
+	    for (var x = 0; x < 512; x++) {
+	    	grosseBidouille[x] = [];
+	    	for (var z = 0; z < 512; z++) {
+	    		var pixIndex = (Math.floor(x) + Math.floor(z) * img.width) * 4;
+	    		var heightValue = Math.pow(pix[pixIndex] / 255.0, 1.2) * bumpScale;
+		    	grosseBidouille[x][z] = heightValue;
+	    	}
 	    }
 
 		landGeometry.verticesNeedUpdate = true;
