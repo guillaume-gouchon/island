@@ -8,12 +8,8 @@ function start () {
 	// hide blocker
 	var blocker = document.getElementById('blocker');
 	blocker.classList.add('hidden');
-	setTimeout(function () {
-		// request browser's fullscreen and pointer lock
-		requestFullscreen();
-		requestPointerLock();
-	}, 500);
-
+	requestFullscreen();
+	requestPointerLock();
 }
 
 

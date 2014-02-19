@@ -44,7 +44,6 @@ THREE.PointerLockControls = function ( camera ) {
 	};
 
 	var onKeyDown = function ( event ) {
-
 		switch ( event.keyCode ) {
 
 			case 38: // up
@@ -70,6 +69,10 @@ THREE.PointerLockControls = function ( camera ) {
 				if ( canJump === true ) velocity.y += 10;
 				canJump = false;
 				break;
+
+            case 16: // shift
+                movementSpeed = 0.3;
+                break;
 
 		}
 
@@ -99,6 +102,9 @@ THREE.PointerLockControls = function ( camera ) {
 				moveRight = false;
 				break;
 
+            case 16: // shift
+                movementSpeed = 0.1;
+                break;
 		}
 
 	};
