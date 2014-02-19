@@ -18,8 +18,8 @@ function createScene() {
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 30000);
 
 	// setup lights
-	sunLight = new THREE.DirectionalLight(0xffff55, 1);
-	sunLight.position.set(0, 10000, 0);
+	sunLight = new THREE.DirectionalLight(0xffffff, 1);
+	sunLight.position.set(0, 1000, 0);
 	scene.add(sunLight);
 
 	// setup controls
@@ -47,13 +47,12 @@ function createScene() {
 
 	// add elements
 	initSkybox();
+	addWater();
 	initHeightMap(function () {
 		loadAssets();
 		loadBirds();
 		animate();
 	});
-	addWater();
-
 }
 
 function onWindowResize() {
@@ -103,7 +102,7 @@ onDOMLoaded(function () {
 
 
 function loadAssets() {
-	this.loader.load(assetsPath + 'tree.js', geometryLoaded(addRandomTrees));
+	this.loader.load(assetsPath + 'tree.js', geometryLoaded('tree', addRandomTrees));
 
 	models.grass = {
 		materials: [
@@ -120,6 +119,8 @@ function loadAssets() {
 		]
 	};
 
+	this.loader.load(assetsPath + 'rock.js', geometryLoaded('rock', addRandomRocks));
+
 }
 
 function loadBirds() {
@@ -131,15 +132,15 @@ function loadBirds() {
 /**
 *	Callback when a geometry is loaded.
 */
-function geometryLoaded (next) {
+function geometryLoaded (key, next) {
 	return function (geometry, materials) {
-		models.swamptree = {
+		models[key] = {
 			geometry: geometry,
 			materials: new THREE.MeshLambertMaterial(
 				{
 					transparent: true,
 					lights:true,
-					map: THREE.ImageUtils.loadTexture(assetsPath + 'tree.png', new THREE.UVMapping())
+					map: THREE.ImageUtils.loadTexture(assetsPath + key + '.png', new THREE.UVMapping())
 				})
 		};
 		next();
@@ -206,7 +207,7 @@ function animateBirds(delta) {
 
 
 function addRandomGrass () {
-	for (var i = 0; i < 4000; i++) {
+	for (var i = 0; i < 5000; i++) {
 		var xPosition = Math.random() * 512;
 		var zPosition = Math.random() * 512;
 		var yPosition = grosseBidouille[Math.floor(xPosition)][Math.floor(zPosition)];
@@ -226,6 +227,27 @@ function addRandomGrass () {
 	}
 }
 
+function addRandomRocks () {
+	for (var i = 0; i < 500; i++) {
+		var xPosition = Math.random() * 512;
+		var zPosition = Math.random() * 512;
+		var yPosition = grosseBidouille[Math.floor(xPosition)][Math.floor(zPosition)];
+
+		if (yPosition > 80 && yPosition < 100) {
+			// add rock
+			var rock = new THREE.Mesh(models.rock.geometry, models.rock.materials);
+			rock.position = {
+				x: xPosition * terrainSize / 512 - terrainSize / 2,
+				y: yPosition - 10,
+				z: zPosition * terrainSize / 512 - terrainSize / 2
+			}
+			rock.scale.set(18, 18, 18);
+			rock.rotation.y = 2 * Math.PI * Math.random(); 
+			scene.add(rock);
+		}
+	}
+}
+
 
 function addRandomTrees () {
 	for (var i = 0; i < 400; i++) {
@@ -235,15 +257,16 @@ function addRandomTrees () {
 
 		if (yPosition > 85 && yPosition < 110) {
 			// add tree
-			var tree = new THREE.Mesh(models.swamptree.geometry, models.swamptree.materials);
+			var tree = new THREE.Mesh(models.tree.geometry, models.tree.materials);
 			tree.position = {
 				x: xPosition * terrainSize / 512 - terrainSize / 2,
 				y: yPosition - 10,
 				z: zPosition * terrainSize / 512 - terrainSize / 2
 			}
 			tree.scale.set(4, 4, 4);
+			tree.rotation.y = 2 * Math.PI * Math.random();
 			scene.add(tree);
-			objects.push(tree)
+			objects.push(tree);
 		}
 	}
 }

@@ -66,10 +66,16 @@ body {
 			cursor: pointer;
 		}
 
-		.content a {
-			text-decoration: none;
-			color: #4DB85B;
-			margin-left: 25px;
+		.content {
+
+			.offsetLeft {
+				margin-left: 25px;
+			}
+
+			a {
+				text-decoration: none;
+				color: #4DB85B;
+			}
 		}
 
 	}

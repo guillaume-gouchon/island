@@ -71,7 +71,7 @@ THREE.PointerLockControls = function ( camera ) {
 				break;
 
             case 16: // shift
-                movementSpeed = 10;
+                movementSpeed = 0.3;
                 break;
 
 		}
