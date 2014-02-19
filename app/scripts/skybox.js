@@ -28,5 +28,5 @@ function initSkybox () {
 }
 
 function animateSkybox () {
-	skybox.rotation.y += de2ra(0.005);
+	skybox.rotation.y += de2ra(0.004);
 }
