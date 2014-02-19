@@ -20,7 +20,7 @@ function requestFullscreen () {
 	var element = document.body;
 
 	var fullscreenchange = function ( event ) {
-		if ( !(document.fullscreenElement === element || document.mozFullscreenElement === element || 
+		if ( !(document.fullscreenElement === element || document.mozFullscreenElement === element ||
 					document.mozFullScreenElement === element || document.webkitFullscreenElement === element ||
 					document.webkitfullscreenElement === element)) {
 			// Exiting fullscreen mode: overlay the instruction screen and disable mouse control
@@ -72,13 +72,13 @@ function requestFullscreen () {
 *	POINTER LOCK
 */
 function requestPointerLock () {
-	var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document 
+	var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document
 							|| 'webkitPointerLockElement' in document;
 	if (havePointerLock) {
 		var element = document.body;
 
 		var pointerlockchange = function (event) {
-			if ( document.pointerLockElement === element || document.mozPointerLockElement === element 
+			if ( document.pointerLockElement === element || document.mozPointerLockElement === element
 				|| document.webkitPointerLockElement === element ) {
 				// controls.enabled = true;
 			} else {
@@ -89,7 +89,7 @@ function requestPointerLock () {
 		document.addEventListener( 'pointerlockchange', pointerlockchange, false );
 		document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
 		document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
-	
+
 		// Ask the browser to lock the pointer
 		element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 		element.requestPointerLock();
@@ -115,12 +115,19 @@ creditsLink.addEventListener('click', showCredits, false);
 *	WEBGL ERROR
 */
 function isWebGLEnabled() {
-	try { 
+	try {
 		return !! window.WebGLRenderingContext && !! document.createElement('canvas').getContext('experimental-webgl');
-	} catch(e) { 
-		return false; 
+	} catch(e) {
+		return false;
 	}
 }
+
+
+/**
+*   REMOVE WAIT SPINNER
+*/
+// document.getElementById('spinner').classList.add('hidden');
+// document.getElementById('blocker').classList.remove('hidden');
 
 
 /**
