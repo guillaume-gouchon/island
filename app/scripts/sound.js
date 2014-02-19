@@ -5,17 +5,14 @@ var SeaSound = function ( soundFilePath, radius, volume ) {
 	
 	audio1.addEventListener('timeupdate', function () {
 		var remain = this.duration - this.currentTime;
-		console.log(remain)
-        if (remain <= 0.35){
-            audio2.currentTime = 0;
+        if (remain <= 0.5){
 		    audio2.play();
         }
 	}, false);
 
 	audio2.addEventListener('timeupdate', function () {
 		var remain = this.duration - this.currentTime;
-        if (remain <= 0.35){
-            audio1.currentTime = 0;
+        if (remain <= 0.5){
 		    audio1.play();
         }
 	}, false);
@@ -31,13 +28,10 @@ var SeaSound = function ( soundFilePath, radius, volume ) {
 	this.update = function ( camera ) {
 
 		// increase volume the more we are closer to the sea
-		var distance = centerPoint.position.distanceTo( camera.position );
+		var distance = centerPoint.position.distanceTo(camera.position);
 		if ( distance <= radius ) {
-			audio1.volume = Math.max(0, volume * distance / radius);
-			audio2.volume = Math.max(0, volume * distance / radius);
-		} else {
-			audio1.volume = 0;
-			audio2.volume = 0;
+			audio1.volume = Math.max(0, volume * Math.pow(distance / radius, 2));
+			audio2.volume = Math.max(0, volume * Math.pow(distance / radius, 2));
 		}
 
 	}
@@ -45,6 +39,7 @@ var SeaSound = function ( soundFilePath, radius, volume ) {
 	function createAudioElement() {
 		var audio = document.createElement('audio');
 		audio.preload = true;
+		audio.volume = 0.05;
 
 		var source = document.createElement( 'source' );
 		source.src = soundFilePath + '.mp3';

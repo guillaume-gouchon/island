@@ -237,7 +237,8 @@ function addRandomGrass () {
 				y: yPosition + 5,
 				z: zPosition * terrainSize / 512 - terrainSize / 2
 			}
-			grass.scale.set(15, 15, 15)
+			var randomScale = 13 + Math.random() * 2;
+			grass.scale.set(randomScale, randomScale, randomScale)
 			scene.add(grass);
 		}
 	}
@@ -257,7 +258,8 @@ function addRandomRocks () {
 				y: yPosition - 10,
 				z: zPosition * terrainSize / 512 - terrainSize / 2
 			}
-			rock.scale.set(18, 18, 18);
+			var randomScale = 12 + Math.random() * 6;
+			rock.scale.set(randomScale, randomScale, randomScale);
 			rock.rotation.y = 2 * Math.PI * Math.random();
 			scene.add(rock);
 		}
@@ -279,7 +281,8 @@ function addRandomTrees () {
 				y: yPosition - 10,
 				z: zPosition * terrainSize / 512 - terrainSize / 2
 			}
-			tree.scale.set(4, 4, 4);
+			var randomScale = 3.5 + Math.random() * 1;
+			tree.scale.set(randomScale, randomScale, randomScale);
 			tree.rotation.y = 2 * Math.PI * Math.random();
 			scene.add(tree);
 			objects.push(tree);
