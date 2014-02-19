@@ -20,7 +20,11 @@ THREE.PointerLockControls = function ( camera ) {
 	var moveLeft = false;
 	var moveRight = false;
 
-	var isOnObject = false;
+	// var isOnObject = false;
+
+    // check collisions
+    this.collisionOnZ = false;
+
 	var canJump = false;
 
 	var velocity = new THREE.Vector3();
@@ -121,12 +125,12 @@ THREE.PointerLockControls = function ( camera ) {
 
 	};
 
-	this.isOnObject = function ( boolean ) {
+	// this.isOnObject = function ( boolean ) {
 
-		isOnObject = boolean;
-		canJump = boolean;
+	// 	isOnObject = boolean;
+	// 	canJump = boolean;
 
-	};
+	// };
 
 	this.getDirection = function() {
 
@@ -156,14 +160,14 @@ THREE.PointerLockControls = function ( camera ) {
 
 		delta *= 0.1;
 
-		velocity.x += ( - velocity.x ) * 0.1 * delta;
-		velocity.z += ( - velocity.z ) * 0.1 * delta;
+		velocity.x += (-velocity.x) * 0.1 * delta;
+		velocity.z += (-velocity.z) * 0.1 * delta;
 
-		if ( moveForward ) velocity.z -= movementSpeed * delta;
-		if ( moveBackward ) velocity.z += movementSpeed * delta;
+		if (moveForward) velocity.z -= movementSpeed * delta;
+		if (moveBackward) velocity.z += movementSpeed * delta;
 
-		if ( moveLeft ) velocity.x -= movementSpeed * delta;
-		if ( moveRight ) velocity.x += movementSpeed * delta;
+		if (moveLeft) velocity.x -= movementSpeed * delta;
+		if (moveRight) velocity.x += movementSpeed * delta;
 
 		if (moveForward || moveBackward || moveLeft || moveRight) {
 			if (moveForward || moveBackward) {
@@ -173,6 +177,11 @@ THREE.PointerLockControls = function ( camera ) {
 			// udpate camera height when walking
 			yawObject.position.y += 0.18 * Math.cos(t);
 		}
+
+        // No move if against object
+        if (this.collisionOnZ === true) {
+            velocity.z = Math.max(0, velocity.z);
+        }
 
 		yawObject.translateX( velocity.x );
 		yawObject.translateZ( velocity.z );
