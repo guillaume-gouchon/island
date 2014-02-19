@@ -166,7 +166,7 @@ function geometryLoaded (key, next) {
 function birdLoaded() {
 	return function(geometry, materials) {
 		models.bird = { geometry: geometry, materials: materials};
-		addBirds();materials
+		addBirds();
 	}
 }
 

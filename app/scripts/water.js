@@ -14,7 +14,7 @@ function addWater () {
 		sunDirection: sunLight.position.normalize(),
 		sunColor: 0xffffff,
 		waterColor: 0x001e0f,
-		distortionScale: 50.0,
+		distortionScale: 50.0
 	});
 
 	// blacken the water everywhere
