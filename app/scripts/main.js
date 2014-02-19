@@ -29,9 +29,9 @@ function createScene() {
 	user.position.z = 1000;
 	scene.add(user);
 
-	// setup main raycaster
-	ray = new THREE.Raycaster();
-	ray.ray.direction.set(0, -1, 0);
+	// setup raycasters to check collisions
+	rayZ = new THREE.Raycaster();
+    rayZ.ray.direction.set(0, 0, 1);
 
 	// setup renderer
 	renderer = new THREE.WebGLRenderer();
@@ -63,6 +63,22 @@ function onWindowResize() {
 
 function animate() {
 	requestAnimationFrame(animate);
+
+    // Check collisions
+    // reset
+    controls.collisionOnZ = false;
+    controls.collisionOnX = false;
+
+    // on z axis
+    rayZ.ray.origin.copy(controls.getObject().position);
+    rayZ.ray.origin.z -= 20;
+    var intersectionsZ = rayZ.intersectObjects(objects);
+    if (intersectionsZ.length > 0) {
+        var distance = intersectionsZ[0].distance;
+        if (distance > 0 && distance < 10) {
+            controls.collisionOnZ = true;
+        }
+    }
 
 	var positionY = grosseBidouille[Math.floor(512 * (user.position.x + terrainSize / 2) / terrainSize)][Math.floor(512 * (user.position.z + terrainSize / 2) / terrainSize)];
 	user.position.y += (positionY + userHeight - user.position.y) * 0.05;
@@ -242,7 +258,7 @@ function addRandomRocks () {
 				z: zPosition * terrainSize / 512 - terrainSize / 2
 			}
 			rock.scale.set(18, 18, 18);
-			rock.rotation.y = 2 * Math.PI * Math.random(); 
+			rock.rotation.y = 2 * Math.PI * Math.random();
 			scene.add(rock);
 		}
 	}
