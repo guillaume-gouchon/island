@@ -138,35 +138,9 @@ module.exports = function (grunt) {
                 expand: true,     // Enable dynamic expansion.
                 cwd: '.tmp',      // Src matches are relative to this path.
                 src: [
-                    'scripts/**/*.js',
-                    'bower_components/requirejs-google-analytics/dist/GoogleAnalytics.js'
+                    'scripts/**/*.js'
                 ], // Actual pattern(s) to match.
                 dest: '.tmp'  // Same dest
-            }
-        },
-        requirejs: {
-            dist: {
-                // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
-                options: {
-                    // `name` and `out` is set by grunt-usemin
-                    name: '../bower_components/almond/almond',
-                    almond: true,
-                    baseUrl: '.tmp/scripts',
-                    out: '<%= appName.dist %>/scripts/main.js',
-                    include: ['main'],
-                    insertRequire: ['main'],
-                    optimize: 'none',
-                    // TODO: Figure out how to make sourcemaps work with grunt-usemin
-                    // https://github.com/yeoman/grunt-usemin/issues/30
-                    //generateSourceMaps: true,
-                    // required to support SourceMaps
-                    // http://requirejs.org/docs/errors.html#sourcemapcomments
-                    preserveLicenseComments: false,
-                    useStrict: true,
-                    wrap: true,
-                    mainConfigFile: '.tmp/scripts/main.js',
-                    //uglify2: {} // https://github.com/mishoo/UglifyJS2
-                }
             }
         },
         'bower-install': {
@@ -285,26 +259,25 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        // Replace 
+        // Replace
         replace: {
-            dist: {
-                options: {
-                    variables: {
-                        '<script data-main="scripts/main" src="bower_components/requirejs/require.js">':
-                            '<script src="scripts/main.js">'
-                    },
-                    prefix: '<!-- @@Replace that by almond main script -->'
-                },
-                files: {
-                    '<%= appName.dist %>/index.html': ['<%= appName.dist %>/index.html']
-                }
-            },
             appcache: {
                 options: {
                     variables: {
                         '<html lang="en">': '<html lang="en" manifest="' + date + '.appName.appcache">'
                     },
                     prefix: '<!--@@Add appcache-->'
+                },
+                files: {
+                    '<%= appName.dist %>/index.html': ['<%= appName.dist %>/index.html']
+                }
+            },
+            modernizr: {
+                options: {
+                    variables: {
+                        '<script src="bower_components/modernizr/modernizr.js">': '<script src="scripts/vendor/modernizr.js">'
+                    },
+                    prefix: '<!--@@Replace modernizr-->'
                 },
                 files: {
                     '<%= appName.dist %>/index.html': ['<%= appName.dist %>/index.html']
@@ -334,10 +307,8 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,png,txt}',
                         '*.htaccess',
-                        'images/{,*/}*.{webp,gif}',
                         'styles/fonts/{,*/}*.*',
-                        'scripts/json/{,*/}*.json',
-                        'scripts/locales/{,*/}*.json'
+                        'assets/**/*'
                     ]
                 }]
             },
@@ -379,13 +350,6 @@ module.exports = function (grunt) {
                 'htmlmin'
             ]
         },
-        uglify: {
-            dist: {
-                files: {
-                    '<%= appName.dist %>/scripts/main.js': ['<%= appName.dist %>/scripts/main.js']
-                }
-            }
-        },
         appcache: {
             options: {
                 basePath: 'dist'
@@ -394,13 +358,6 @@ module.exports = function (grunt) {
                 dest: '<%= appName.dist%>/' + date + '.appName.appcache',
                 cache: '<%= appName.dist %>/{*.html,images/**/*,scripts/**/*,styles/**/*}',
                 network: ['rre/rest', 'http://www.google-analytics.com/']
-            }
-        },
-        minjson: {
-            dist: {
-                files: {
-                    // Minify json files, cant use wildcards
-                }
             }
         }
     });
@@ -435,17 +392,15 @@ module.exports = function (grunt) {
             'useminPrepare',
             'autoprefixer:dist',
             'concurrent:dist',
-            'copy:tmp',
+            // 'copy:tmp',
             'removelogging:dist',
             //'rev',
             'usemin:html',
-            'requirejs',
             'concat',
             'uglify',
             'copy:dist',
-            'minjson',
-            'replace:dist',
             //'replace:appcache',
+            'replace:modernizr',
             'usemin:css',
             'cssmin:dist',
             //'appcache:dist',
