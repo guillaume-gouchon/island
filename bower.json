@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "modernizr": "~2.6.2",
-    "threejs": "*"
+    "threejs": "r66"
   },
   "devDependencies": {}
 }
