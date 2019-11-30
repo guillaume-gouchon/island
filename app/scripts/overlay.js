@@ -96,21 +96,6 @@ function requestPointerLock () {
 	}
 }
 
-
-/**
-*	CREDITS
-*/
-var credits = document.getElementById('credits');
-var creditsLink = credits.getElementsByClassName('link')[0];
-
-function showCredits () {
-	credits.getElementsByClassName('content')[0].classList.remove('hidden');
-	credits.removeEventListener('click', showCredits);
-}
-
-creditsLink.addEventListener('click', showCredits, false);
-
-
 /**
 *	WEBGL ERROR
 */

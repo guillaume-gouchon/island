@@ -1,0 +1,20 @@
+build:
+  - 'clean:dist'
+  - 'useminPrepare'
+  - 'concurrent:dist'
+  - 'autoprefixer'
+  - 'concat'
+  - 'removelogging'
+  - 'copy:dist'
+  - 'filerev:assets'
+  - 'uglify'
+  - 'filerev:js'
+  - 'usemin'
+  - 'htmlmin'
+
+serve:
+  - 'clean:server'
+  - 'autoprefixer:server'
+  - 'configureProxies:server'
+  - 'connect:livereload'
+  - 'watch'

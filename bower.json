@@ -1,9 +1,0 @@
-{
-  "name": "island",
-  "private": true,
-  "dependencies": {
-    "modernizr": "~2.6.2",
-    "threejs": "r66"
-  },
-  "devDependencies": {}
-}

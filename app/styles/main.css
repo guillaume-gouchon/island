@@ -1,0 +1,86 @@
+body {
+	background: #000;
+	margin: 0px;
+	overflow: hidden;
+	font-family: 'Frijole', cursive;
+}
+
+.hide {
+	display: none;
+}
+
+.hidden {
+	opacity: 0;
+}
+
+.black-overlay {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+#blocker {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	cursor: default;
+	color: #eee;
+	text-shadow: 2px 2px 1px #111;
+}
+
+#clickZone {
+	position:absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+}
+
+#instructions {
+	position: relative;
+	top: 40%;
+	width: 100%;
+	text-align: center;
+}
+
+#clickToPlay {
+	font-size: 3.0em;
+	-webkit-animation: bounce 4s alternate 1s infinite;
+	-moz-animation: bounce 4s alternate 1s infinite;
+}
+
+#commands {
+	font-size: 1.2em;
+}
+
+#webGLError {
+	width: 100%;
+	position: absolute;
+	top: 10px;
+	text-align:center;
+	font-size: 1.2em;
+}
+
+#webGLError a {
+	text-decoration: none;
+	color: #4DB85B;
+}
+
+#webGLError a:hover {
+	opacity: 0.5;
+}
+
+.easeTransition {
+    -webkit-transition: all 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000);
+    -moz-transition: all 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000);
+    -ms-transition: all 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000);
+    -o-transition: all 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000);
+    transition: all 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000);
+}
+
+-webkit-keyframes bounce {
+     from {-webkit-transform: scale(1);}
+     to   {-webkit-transform: scale(1.05);}
+}
+-moz-keyframes bounce {
+     from {-moz-transform: scale(1);}
+     to   {-moz-transform: scale(1.05);}
+}
