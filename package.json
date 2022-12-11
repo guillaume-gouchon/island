@@ -8,7 +8,7 @@
   },
   "author": "Guillaume Gouchon",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.3"
   },
   "devDependencies": {
     "connect-modrewrite": "^0.9.0",
